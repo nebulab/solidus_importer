@@ -11,3 +11,4 @@ Spree::Backend::Config.configure do |config|
 end
 
 MIME::Types.add(MIME::Type.new(["application/csv", "csv"]), true)
+MIME::Types.add(MIME::Type.new(["application/vnd.ms-excel", "csv"]), true)
