@@ -8,7 +8,30 @@
   <div class="col-3">
     <div class="field">
       <%= f.label :file %><br>
-      <%= f.file_field :file %>
+      <%= f.file_field :file, accept: "text/csv" %>
     </div>
   </div>
 </div>
+<script> 
+  var control = document.getElementById("solidus_importer_import_file");
+  control.addEventListener("change", function(event) {
+  // When the control has changed, there are new files
+  f = solidus_importer_import_file.files[0]
+  //console.log("Filename: " + f.name);
+  console.log("Type: " + f.type);
+  //console.log("Size: " + f.size + " bytes");
+  var fileReader = new FileReader();
+  fileReader.onloadend = function(e) {
+    var arr = (new Uint8Array(e.target.result)).subarray(0, 4);
+    var header = "";
+    for(var i = 0; i < arr.length; i++) {
+      header += arr[i].toString(16);
+    }
+    console.log(header);
+    // Check the file signature against known types 
+    // See https://github.com/solidusio-contrib/solidus_importer/issues/55
+  };
+  fileReader.readAsArrayBuffer(f);
+}, false);
+  </script>
+
